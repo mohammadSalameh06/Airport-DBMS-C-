@@ -1,0 +1,87 @@
+CREATE TABLE Passengers (
+    PassengerID INT PRIMARY KEY,
+    FirstName VARCHAR(50),
+    LastName VARCHAR(50),
+    PassportNumber VARCHAR(20),
+    ContactNumber VARCHAR(15)
+);
+
+CREATE TABLE Flights (
+    FlightID INT PRIMARY KEY,
+    FlightNumber VARCHAR(20),
+    Destination VARCHAR(50),
+    DepartureTime DATETIME,
+    ArrivalTime DATETIME,
+    Gate VARCHAR(10)
+);
+
+CREATE TABLE Employees (
+    EmployeeID INT PRIMARY KEY,
+    Name VARCHAR(50),
+    EmployeeIDNumber VARCHAR(20)
+);
+
+CREATE TABLE Tickets (
+    TicketNumber INT PRIMARY KEY,
+    PassengerID INT,
+    FlightID INT,
+    SeatNumber VARCHAR(10),  -- Added SeatNumber attribute
+    FOREIGN KEY (PassengerID) REFERENCES Passengers(PassengerID),
+    FOREIGN KEY (FlightID) REFERENCES Flights(FlightID)
+);
+
+CREATE TABLE Airports (
+    AirportID INT PRIMARY KEY,
+    Name VARCHAR(50),
+    Location VARCHAR(50)
+);
+
+-- Added Departments table with DepartmentID and DepartmentName attributes
+CREATE TABLE Departments (
+    DepartmentID INT PRIMARY KEY,
+    DepartmentName VARCHAR(50)
+);
+
+-- Added EmployeeDepartment relationship table with EmployeeID and DepartmentID attributes
+CREATE TABLE EmployeeDepartments (
+    EmployeeID INT,
+    DepartmentID INT,
+    PRIMARY KEY (EmployeeID, DepartmentID),
+    FOREIGN KEY (EmployeeID) REFERENCES Employees(EmployeeID),
+    FOREIGN KEY (DepartmentID) REFERENCES Departments(DepartmentID)
+);
+
+-- Added Tasks table with TaskID and TaskName attributes
+CREATE TABLE Tasks (
+    TaskID INT PRIMARY KEY,
+    TaskName VARCHAR(50)
+);
+
+-- Added EmployeeTasks relationship table with EmployeeID and TaskID attributes
+CREATE TABLE EmployeeTasks (
+    EmployeeID INT,
+    TaskID INT,
+    PRIMARY KEY (EmployeeID, TaskID),
+    FOREIGN KEY (EmployeeID) REFERENCES Employees(EmployeeID),
+    FOREIGN KEY (TaskID) REFERENCES Tasks(TaskID)
+);
+
+-- Added AirportManagers table with AirportManagerID, EmployeeID, AirportID, and Responsibilities attributes
+CREATE TABLE AirportManagers (
+    AirportManagerID INT PRIMARY KEY,
+    EmployeeID INT,
+    AirportID INT,
+    Responsibilities VARCHAR(100),
+    FOREIGN KEY (EmployeeID) REFERENCES Employees(EmployeeID),
+    FOREIGN KEY (AirportID) REFERENCES Airports(AirportID)
+);
+
+-- Added PassengerFlights relationship table with PassengerID, FlightID, and SeatNumber attributes
+CREATE TABLE PassengerFlights (
+    PassengerID INT,
+    FlightID INT,
+    SeatNumber VARCHAR(10),
+    PRIMARY KEY (PassengerID, FlightID),
+    FOREIGN KEY (PassengerID) REFERENCES Passengers(PassengerID),
+    FOREIGN KEY (FlightID) REFERENCES Flights(FlightID)
+);
